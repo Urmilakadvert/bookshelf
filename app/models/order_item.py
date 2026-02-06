@@ -11,5 +11,8 @@ class OrderItem(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Numeric(10, 2), nullable=False)  # Store price at time of purchase
     
+    # Constraint
+    __table_args__ = (db.CheckConstraint('quantity > 0', name='check_positive_quantity'),)
+    
     def __repr__(self):
         return f'<OrderItem order_id={self.order_id} book_id={self.book_id}>'

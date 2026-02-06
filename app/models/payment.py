@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from app import db
 
 
@@ -12,8 +12,8 @@ class Payment(db.Model):
     status = db.Column(db.String(50), nullable=False, default='pending')  # pending, completed, failed, refunded
     transaction_id = db.Column(db.String(100), unique=True, nullable=True)
     payment_method = db.Column(db.String(50), nullable=True)  # credit_card, debit_card, paypal, etc.
-    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
+    updated_at = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
     
     def __repr__(self):
         return f'<Payment {self.id} - {self.status}>'
